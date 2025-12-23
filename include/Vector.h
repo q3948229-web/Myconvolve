@@ -9,23 +9,23 @@
 template <typename T> class Vector : public VECTOR<T>
 {
 public:
-	Vector(int size=0, const T *x=NULL);
+	Vector(int size=0, const T *x=NULL); // 构造函数，创建指定大小的向量，可选择初始化数据
 
-	void Input(istream &in);
-	void Output(ostream &out) const;
-	template <typename TYPE> friend Vector<TYPE> operator+(const Vector<TYPE> &v1, const Vector<TYPE> &v2) throw(double);
-	template <typename TYPE> friend Vector<TYPE> operator-(const Vector<TYPE> &v1, const Vector<TYPE> &v2) throw(double);
+	void Input(istream &in); // 从输入流读取向量数据
+	void Output(ostream &out) const; // 将向量输出到输出流
+	template <typename TYPE> friend Vector<TYPE> operator+(const Vector<TYPE> &v1, const Vector<TYPE> &v2) throw(double); // 向量加法运算符
+	template <typename TYPE> friend Vector<TYPE> operator-(const Vector<TYPE> &v1, const Vector<TYPE> &v2) throw(double); // 向量减法运算符
 	template <typename U>
-	friend Vector<U> operator*(const U &x, const Vector<U> &v);
+	friend Vector<U> operator*(const U &x, const Vector<U> &v); // 标量与向量相乘（标量在前）
 	template <typename U>
-	friend Vector<U> operator*(const Vector<U> &v, const U &x);
-	Vector<T> & operator+=(const Vector<T> &v) throw(double);
-	Vector<T> & operator-=(const Vector<T> &v) throw(double);
-	Vector<T> & operator*=(const T &x);
-	T dot(const Vector<T> &v) const throw(double); // Add dot product method
-	Vector<T> reverse() const;
-	Vector<T> subvector(int start, int length) const throw(double); // Add subvector method
-	Vector<T> pad(int padding, T value) const; // Add pad method
+	friend Vector<U> operator*(const Vector<U> &v, const U &x); // 向量与标量相乘（标量在后）
+	Vector<T> & operator+=(const Vector<T> &v) throw(double); // 向量加法赋值运算符
+	Vector<T> & operator-=(const Vector<T> &v) throw(double); // 向量减法赋值运算符
+	Vector<T> & operator*=(const T &x); // 向量与标量乘法赋值运算符
+	T dot(const Vector<T> &v) const throw(double); // 计算点积
+	Vector<T> reverse() const; // 反转向量元素顺序
+	Vector<T> subvector(int start, int length) const throw(double); // 提取子向量
+	Vector<T> pad(int padding, T value) const; // 在向量两端添加填充
 };
 
 template <typename T>
