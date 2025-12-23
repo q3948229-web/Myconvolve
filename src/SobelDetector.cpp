@@ -1,7 +1,7 @@
 #include "SobelDetector.h"
 #include <cmath>
 
-SobelDetector::SobelDetector() : Convolution(), useThreshold(false), thresholdValue(0.0) {
+SobelDetector::SobelDetector() : Convolution(), useThreshold(false), thresholdValue(0.0), invertOutput(false) {
     // SobelDetector doesn't use the base 'kernel' member for the main operation,
     // but we initialize the base class anyway.
 }
@@ -13,6 +13,10 @@ void SobelDetector::setThreshold(double t) {
 
 void SobelDetector::disableThreshold() {
     useThreshold = false;
+}
+
+void SobelDetector::setInvert(bool inv) {
+    invertOutput = inv;
 }
 
 Image SobelDetector::apply(const Image& input) const {
@@ -49,6 +53,12 @@ Image SobelDetector::apply(const Image& input) const {
                 } else {
                     magnitude = 0.0;
                 }
+            }
+
+            // Apply inversion
+            if (invertOutput) {
+                magnitude = 255.0 - magnitude;
+                if (magnitude < 0) magnitude = 0; // Safety clamp
             }
 
             result.setElement(i, j, magnitude);

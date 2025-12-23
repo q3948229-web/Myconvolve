@@ -52,9 +52,12 @@ int main(int argc, char* argv[]) {
     string inputPath;
     string outputPath;
     double threshold = -1.0;
+    bool invert = false;
 
     if (argc < 3) {
-        cout << "Usage: " << argv[0] << " <input_pgm> <output_pgm> [threshold]" << endl;
+        cout << "Usage: " << argv[0] << " <input_pgm> <output_pgm> [threshold] [invert]" << endl;
+        cout << "  threshold: 0-255, or -1 to disable" << endl;
+        cout << "  invert: 'invert', 'true', or '1' to invert output (white background)" << endl;
         cout << "No arguments provided. Generating and using sample image..." << endl;
         
         createSampleImage("sample.pgm");
@@ -66,6 +69,12 @@ int main(int argc, char* argv[]) {
         outputPath = argv[2];
         if (argc > 3) {
             threshold = atof(argv[3]);
+        }
+        if (argc > 4) {
+            string arg4 = argv[4];
+            if (arg4 == "invert" || arg4 == "true" || arg4 == "1") {
+                invert = true;
+            }
         }
     }
 
@@ -87,6 +96,11 @@ int main(int argc, char* argv[]) {
             sobel.setThreshold(threshold);
         } else {
             cout << "Thresholding disabled." << endl;
+        }
+
+        if (invert) {
+            cout << "Output inversion enabled (White background)." << endl;
+            sobel.setInvert(true);
         }
 
         Image result = sobel.apply(img);
