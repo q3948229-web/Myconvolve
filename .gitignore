@@ -1,8 +1,9 @@
 # Build directories
-build/
+build/*
+!build/matrix_conv.exe
 bin/
 obj/
-
+!*.exe
 # IDE files
 .vscode/
 .idea/
@@ -10,7 +11,7 @@ obj/
 *.swo
 
 # Compiled files
-*.exe
+
 *.o
 *.obj
 *.a
