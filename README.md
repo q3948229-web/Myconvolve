@@ -18,7 +18,7 @@ cmake --build .
 Run the executable from the command line:
 
 ```bash
-./matrix_conv <input_pgm> <output_pgm> [threshold]
+./matrix_conv.exe <input_pgm> <output_pgm> [threshold]
 ```
 
 - `input_pgm`: Path to input PGM (P2) image.

@@ -9,6 +9,43 @@
 
 using namespace std;
 
+void testMatrixExceptions() {
+    cout << "\n=== Matrix Exception Test ===" << endl;
+    
+    // 1. 准备维度不匹配的矩阵
+    Matrix m1(2, 2); // 2行2列
+    Matrix m2(2, 3); // 2行3列
+    Matrix m3(3, 2); // 3行2列
+
+    // 2. 测试加法异常
+    cout << "[Test 1] Addition with mismatched columns (2x2 + 2x3): ";
+    try {
+        Matrix result = m1 + m2; // 应该抛出异常
+        cout << "FAILED (Exception not thrown)" << endl;
+    } catch (double e) {
+        if (e == -1.0) {
+            cout << "PASSED (Caught expected exception: " << e << ")" << endl;
+        } else {
+            cout << "FAILED (Caught wrong value: " << e << ")" << endl;
+        }
+    } catch (...) {
+        cout << "FAILED (Caught unknown exception type)" << endl;
+    }
+
+    // 3. 测试减法异常
+    cout << "[Test 2] Subtraction with mismatched rows (2x2 - 3x2): ";
+    try {
+        Matrix result = m1 - m3; // 应该抛出异常
+        cout << "FAILED (Exception not thrown)" << endl;
+    } catch (double e) {
+        if (e == -1.0) {
+            cout << "PASSED (Caught expected exception: " << e << ")" << endl;
+        } else {
+            cout << "FAILED (Caught wrong value: " << e << ")" << endl;
+        }
+    }
+}
+
 // Helper to create a sample image for demonstration
 void createSampleImage(const string& filename) {
     int width = 200;
@@ -58,8 +95,10 @@ int main(int argc, char* argv[]) {
         cout << "Usage: " << argv[0] << " <input_pgm> <output_pgm> [threshold] [invert]" << endl;
         cout << "  threshold: 0-255, or -1 to disable" << endl;
         cout << "  invert: 'invert', 'true', or '1' to invert output (white background)" << endl;
-        cout << "No arguments provided. Generating and using sample image..." << endl;
+        cout << "No arguments provided. Running internal tests and generating sample image..." << endl;
         
+        testMatrixExceptions();
+
         createSampleImage("sample.pgm");
         inputPath = "sample.pgm";
         outputPath = "sample_edge.pgm";

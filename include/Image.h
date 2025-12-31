@@ -27,6 +27,10 @@ public:
     // 构造函数
     Image(int h = 0, int w = 0) : Matrix(h, w) {}
 
+    virtual void printInfo() const {
+        cout << "Image (" << rows << "x" << cols << ")" << endl;
+    }
+
     // 从数组初始化
     void fromArray(const double* arr, int h, int w) {
         resize(h, w);

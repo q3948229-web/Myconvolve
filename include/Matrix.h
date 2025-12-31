@@ -2,16 +2,20 @@
 #define MATRIX_H
 
 #include "Vector.h"
+#include <string>
+#include <iostream>
 
-class Matrix {
+using namespace std;
+
+// Abstract Base Class
+class MatrixBase {
 protected:
     Vector<Vector<double> > data;
     int rows;
     int cols;
 
 public:
-    // 构造函数：指定行数和列数
-    Matrix(int r = 0, int c = 0) : rows(r), cols(c) {
+    MatrixBase(int r = 0, int c = 0) : rows(r), cols(c) {
         if (r > 0) {
             data.resize(r);
             for (int i = 0; i < r; ++i) {
@@ -20,7 +24,11 @@ public:
         }
     }
 
-    // 调整大小
+    // Pure virtual function
+    virtual void printInfo() const = 0; 
+
+    virtual ~MatrixBase() {}
+
     void resize(int r, int c) {
         if (r <= 0 || c <= 0) return;
         data.resize(r);
@@ -31,11 +39,9 @@ public:
         cols = c;
     }
 
-    // 获取行数/列数
     int getRows() const { return rows; }
     int getCols() const { return cols; }
 
-    // 获取/设置元素
     double getElement(int r, int c) const throw(int) {
         if (r < 0 || r >= rows || c < 0 || c >= cols) throw -1;
         return data[r][c];
@@ -46,7 +52,29 @@ public:
         data[r][c] = val;
     }
 
-    // 矩阵加法
+    void Output(ostream& out) const {
+        for (int i = 0; i < rows; ++i) {
+            out << data[i] << endl;
+        }
+    }
+};
+
+inline ostream& operator<<(ostream& out, const MatrixBase& m) {
+    m.Output(out);
+    return out;
+}
+
+// Concrete Matrix Class
+class Matrix : public MatrixBase {
+public:
+    Matrix(int r = 0, int c = 0) : MatrixBase(r, c) {}
+
+    // Implement pure virtual function
+    virtual void printInfo() const {
+        cout << "Matrix (" << rows << "x" << cols << ")" << endl;
+    }
+
+    // Operators return Matrix (Concrete)
     Matrix operator+(const Matrix& other) const throw(double) {
         if (rows != other.rows || cols != other.cols) throw -1.0;
         Matrix result(rows, cols);
@@ -56,7 +84,6 @@ public:
         return result;
     }
 
-    // 矩阵减法
     Matrix operator-(const Matrix& other) const throw(double) {
         if (rows != other.rows || cols != other.cols) throw -1.0;
         Matrix result(rows, cols);
@@ -66,7 +93,6 @@ public:
         return result;
     }
 
-    // 矩阵乘法（与标量）
     Matrix operator*(double scalar) const {
         Matrix result(rows, cols);
         for (int i = 0; i < rows; ++i) {
@@ -79,7 +105,6 @@ public:
         return m * scalar;
     }
 
-    // 矩阵乘法（与矩阵）
     Matrix operator*(const Matrix& other) const throw(double) {
         if (cols != other.rows) throw -1.0;
         Matrix result(rows, other.cols);
@@ -95,7 +120,6 @@ public:
         return result;
     }
 
-    // 转置
     Matrix transpose() const {
         Matrix result(cols, rows);
         for (int i = 0; i < rows; ++i) {
@@ -105,18 +129,6 @@ public:
         }
         return result;
     }
-
-    // 输出矩阵内容
-    void Output(ostream& out) const {
-        for (int i = 0; i < rows; ++i) {
-            out << data[i] << endl;
-        }
-    }
 };
-
-inline ostream& operator<<(ostream& out, const Matrix& m) {
-    m.Output(out);
-    return out;
-}
 
 #endif
